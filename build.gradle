@@ -1,0 +1,92 @@
+apply plugin: 'base'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = "org.webjars"
+
+version = "1.4.5-SNAPSHOT"
+
+ext.upstreamVersion = "1.4.5"
+ext.upstreamDownloadUrl = "http://downloads.sourceforge.net/project/log4javascript/log4javascript/${upstreamVersion}/log4javascript-${upstreamVersion}.tar.gz"
+ext.downloadFile = new File("$buildDir/${project.name}.tar.gz")
+
+ext.webjarSpec = copySpec {
+  from tarTree(getZip.downloadFile)
+  excludes = ["changelog.txt", "docs/", "examples/", "demos/", "test/"].collect {
+    project.name + "-" + upstreamVersion + "/" + it
+  }
+  eachFile {
+    // remove the top dir from the file path
+    it.path -= project.name + "-" + upstreamVersion + "/"
+    // set the new path to be the webjar prefix
+    it.path = "META-INF/resources/webjars/${project.name}/${upstreamVersion}/" + it.path
+  }
+}
+
+ext.licenses {
+  license {
+    name 'The Apache Software License, Version 2.0'
+    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    distribution 'repo'
+  }
+}
+
+ext.developers {
+  developer {
+    id 'jamesward'
+    name 'James Ward'
+    email 'james@jamesward.com'
+  }
+}
+
+
+
+// don't need to touch these
+
+task getZip {
+  doFirst {
+    mkdir(buildDir)
+    downloadFile.bytes = new URL(upstreamDownloadUrl).bytes
+  }
+}
+
+
+
+task createWebJar(type: Jar, dependsOn: getZip) {
+  with webjarSpec
+}
+
+task copyWebJar(type: Copy, dependsOn: getZip) {
+  with webjarSpec
+  into buildDir
+}
+
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
+      }
+
+      pom.project {
+        name project.name
+        packaging 'jar'
+        description 'WebJar for ${project.name}'
+        url 'http://www.webjars.org'
+
+        scm {
+          url 'scm:git@github.com:webjars/${project.name}.git'
+          connection 'scm:git@github.com:webjars/${project.name}.git'
+          developerConnection 'scm:git@github.com:webjars/${project.name}.git'
+        }
+
+        licenses licenses
+
+        developers developers
+      }
+    }
+  }
+}
