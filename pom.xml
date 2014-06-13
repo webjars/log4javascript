@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>log4javascript</artifactId>
-    <version>1.4.9-SNAPSHOT</version>
+    <version>1.4.9</version>
     <name>log4javascript</name>
     <description>WebJar for log4javascript</description>
     <url>http://webjars.org</url>
@@ -36,7 +36,7 @@
         <url>http://github.com/webjars/log4javascript</url>
         <connection>scm:git:https://github.com/webjars/log4javascript.git</connection>
         <developerConnection>scm:git:https://github.com/webjars/log4javascript.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>log4javascript-1.4.9</tag>
     </scm>
 
     <properties>
