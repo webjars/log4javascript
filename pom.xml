@@ -7,11 +7,11 @@
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
-    
+
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>log4javascript</artifactId>
-    <version>1.4.6-SNAPSHOT</version>
+    <version>1.4.9-SNAPSHOT</version>
     <name>log4javascript</name>
     <description>WebJar for log4javascript</description>
     <url>http://webjars.org</url>
@@ -38,10 +38,10 @@
         <developerConnection>scm:git:https://github.com/webjars/log4javascript.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upstream.version>1.4.5</upstream.version>
+        <upstream.version>1.4.9</upstream.version>
         <upstream.url>http://downloads.sourceforge.net/project/log4javascript/log4javascript/${upstream.version}</upstream.url>
         <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstream.version}</destDir>
     </properties>
@@ -73,7 +73,9 @@
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
-                        <goals><goal>run</goal></goals>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                         <configuration>
                             <target>
                                 <echo message="unzip archive" />
@@ -96,7 +98,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>2.5</version>
             </plugin>
         </plugins>
     </build>
