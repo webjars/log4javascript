@@ -52,7 +52,7 @@
 			"shim":{
 				"log4javascript" : {
 					"exports" : "log4javascript"
-				},
+				}
 			}
 		}
 	  </requirejs>
