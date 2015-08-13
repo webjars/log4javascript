@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>log4javascript</artifactId>
-    <version>1.4.14-SNAPSHOT</version>
+    <version>1.4.13-1-SNAPSHOT</version>
     <name>log4javascript</name>
     <description>WebJar for log4javascript</description>
     <url>http://webjars.org</url>
@@ -42,7 +42,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <upstream.version>1.4.13</upstream.version>
-        <upstream.url>http://downloads.sourceforge.net/project/log4javascript/${upstream.version}</upstream.url>
+        <upstream.url>http://iweb.dl.sourceforge.net/project/log4javascript/${upstream.version}/log4javascript-${upstream.version}.zip</upstream.url>
         <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstream.version}</destDir>
 	  <requirejs>
 		{
@@ -61,25 +61,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0-beta-4</version>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <configuration>
-                            <url>${upstream.url}</url>
-                            <fromFile>${project.artifactId}-${upstream.version}.tar.gz</fromFile>
-                            <toDir>${project.build.directory}</toDir>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
                 <executions>
@@ -90,9 +71,10 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="unzip archive" />
-                                <gunzip src="${project.build.directory}/${project.artifactId}-${upstream.version}.tar.gz" dest="${project.build.directory}" />
-                                <untar src="${project.build.directory}/${project.artifactId}-${upstream.version}.tar" dest="${project.build.directory}" />
+                                <echo message="download archive"/>
+                                <get src="${upstream.url}" dest="${project.build.directory}/${project.artifactId}.zip"/>
+                                <echo message="unzip archive"/>
+                                <unzip src="${project.build.directory}/${project.artifactId}.zip" dest="${project.build.directory}"/>
                                 <echo message="moving resources" />
                                 <move todir="${destDir}">
                                     <fileset dir="${project.build.directory}/${project.artifactId}-${upstream.version}">
